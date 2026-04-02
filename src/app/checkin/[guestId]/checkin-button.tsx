@@ -1,52 +1,80 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
-export function CheckInButton({
-  guestId,
-  eventId,
-  isCheckedIn: initialCheckedIn,
-}: {
-  guestId: string;
+type Props = {
   eventId: string;
-  isCheckedIn: boolean;
-}) {
-  const [isCheckedIn, setIsCheckedIn] = useState(initialCheckedIn);
-  const [isLoading, setIsLoading] = useState(false);
+  guestId: string;
+};
+
+export function CheckInButton({ eventId, guestId }: Props) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   async function handleCheckIn() {
-    setIsLoading(true);
+    setLoading(true);
+    setError(null);
+
     try {
-      const res = await fetch(`/api/events/${eventId}/guests/${guestId}/checkin`, {
-        method: 'POST',
-      });
-      if (res.ok) {
-        setIsCheckedIn(true);
+      const res = await fetch(
+        `/api/events/${eventId}/guests/${guestId}/checkin`,
+        { method: 'POST' }
+      );
+
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.error || 'Failed to check in');
       }
-    } catch {
-      // Error handling
+
+      setSuccess(true);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   }
 
-  if (isCheckedIn) {
+  if (success) {
     return (
-      <div className="flex items-center justify-center gap-2 py-4 px-6 rounded-xl bg-green-500 text-white font-bold text-lg">
-        <CheckCircle className="w-6 h-6" />
-        Checked In
+      <div className="flex items-center justify-center gap-2 rounded-lg bg-green-50 p-3">
+        <svg
+          className="h-5 w-5 text-green-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+        <span className="text-sm font-semibold text-green-800">
+          Checked In Successfully
+        </span>
       </div>
     );
   }
 
   return (
-    <button
-      onClick={handleCheckIn}
-      disabled={isLoading}
-      className="w-full py-4 px-6 rounded-xl bg-brand-600 text-white font-bold text-lg hover:bg-brand-700 active:bg-brand-800 transition-colors disabled:opacity-50"
-    >
-      {isLoading ? 'Checking in...' : 'Check In Guest'}
-    </button>
+    <div className="space-y-2">
+      <Button
+        className="w-full"
+        size="lg"
+        loading={loading}
+        onClick={handleCheckIn}
+      >
+        Check In Guest
+      </Button>
+      {error && (
+        <p className="text-center text-sm text-red-600">{error}</p>
+      )}
+    </div>
   );
 }
