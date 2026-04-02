@@ -39,7 +39,7 @@ export default async function ItemDetailPage({
     supabase.from('events').select('slug').eq('id', params.eventId).single(),
   ]);
 
-  if (!item) redirect(`/events/${params.eventId}/items`);
+  if (!item) redirect(`/dashboard/events/${params.eventId}/items`);
   const it = item as Item;
 
   // Fetch bids with guest info
@@ -125,7 +125,7 @@ export default async function ItemDetailPage({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Link
-            href={`/events/${params.eventId}/items`}
+            href={`/dashboard/events/${params.eventId}/items`}
             className="text-sm text-gray-500 hover:text-gray-700"
           >
             &larr; Back to Items
@@ -285,7 +285,7 @@ export default async function ItemDetailPage({
               <h3 className="font-semibold text-gray-900">Actions</h3>
             </CardHeader>
             <CardBody className="flex flex-col gap-2">
-              <Link href={`/events/${params.eventId}/items/${params.itemId}/edit`}>
+              <Link href={`/dashboard/events/${params.eventId}/items/${params.itemId}/edit`}>
                 <Button variant="outline" className="w-full">
                   Edit Item
                 </Button>

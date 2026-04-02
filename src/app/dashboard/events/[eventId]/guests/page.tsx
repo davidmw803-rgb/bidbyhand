@@ -187,8 +187,8 @@ export default async function GuestsPage({
             if (searchParams.checkedin) p.set('checkedin', searchParams.checkedin);
             if (searchParams.q) p.set('q', searchParams.q);
             const href = p.toString()
-              ? `/events/${params.eventId}/guests?${p.toString()}`
-              : `/events/${params.eventId}/guests`;
+              ? `/dashboard/events/${params.eventId}/guests?${p.toString()}`
+              : `/dashboard/events/${params.eventId}/guests`;
             return (
               <Link
                 key={c}
@@ -213,8 +213,8 @@ export default async function GuestsPage({
             if (o.value !== 'all') p.set('checkedin', o.value);
             if (searchParams.q) p.set('q', searchParams.q);
             const href = p.toString()
-              ? `/events/${params.eventId}/guests?${p.toString()}`
-              : `/events/${params.eventId}/guests`;
+              ? `/dashboard/events/${params.eventId}/guests?${p.toString()}`
+              : `/dashboard/events/${params.eventId}/guests`;
             return (
               <Link
                 key={o.value}

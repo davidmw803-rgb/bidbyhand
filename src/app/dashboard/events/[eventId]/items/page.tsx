@@ -86,7 +86,7 @@ export default async function ItemsPage({
       sortable: true,
       render: (item) => (
         <Link
-          href={`/events/${params.eventId}/items/${item.id}`}
+          href={`/dashboard/events/${params.eventId}/items/${item.id}`}
           className="font-medium text-brand-600 hover:underline"
         >
           {item.lot_number}. {item.title}
@@ -137,7 +137,7 @@ export default async function ItemsPage({
       hideMobile: true,
       render: (item) => (
         <div className="flex gap-2">
-          <Link href={`/events/${params.eventId}/items/${item.id}`}>
+          <Link href={`/dashboard/events/${params.eventId}/items/${item.id}`}>
             <Button variant="ghost" size="sm">
               View
             </Button>
@@ -169,7 +169,7 @@ export default async function ItemsPage({
               Close All
             </Button>
           </form>
-          <Link href={`/events/${params.eventId}/items/new`}>
+          <Link href={`/dashboard/events/${params.eventId}/items/new`}>
             <Button size="sm">Add Item</Button>
           </Link>
         </div>
@@ -203,8 +203,8 @@ export default async function ItemsPage({
             if (searchParams.status) params2.set('status', searchParams.status);
             if (searchParams.q) params2.set('q', searchParams.q);
             const href = params2.toString()
-              ? `/events/${params.eventId}/items?${params2.toString()}`
-              : `/events/${params.eventId}/items`;
+              ? `/dashboard/events/${params.eventId}/items?${params2.toString()}`
+              : `/dashboard/events/${params.eventId}/items`;
             return (
               <Link
                 key={t}
@@ -230,8 +230,8 @@ export default async function ItemsPage({
             if (s !== 'all') params2.set('status', s);
             if (searchParams.q) params2.set('q', searchParams.q);
             const href = params2.toString()
-              ? `/events/${params.eventId}/items?${params2.toString()}`
-              : `/events/${params.eventId}/items`;
+              ? `/dashboard/events/${params.eventId}/items?${params2.toString()}`
+              : `/dashboard/events/${params.eventId}/items`;
             return (
               <Link
                 key={s}

@@ -21,7 +21,7 @@ interface EventSubNavProps {
 
 export function EventSubNav({ eventId }: EventSubNavProps) {
   const pathname = usePathname();
-  const basePath = `/events/${eventId}`;
+  const basePath = `/dashboard/events/${eventId}`;
 
   return (
     <div className="flex border-b border-gray-200 overflow-x-auto" role="tablist">
