@@ -406,13 +406,40 @@ export default function EventSettingsPage() {
                   Permanently delete this event and all associated data.
                 </p>
               </div>
-              <Button variant="danger" size="sm" onClick={handleDelete}>
+              <Button variant="danger" size="sm" onClick={() => setShowDeleteConfirm(true)}>
                 Delete Event
               </Button>
             </div>
           </div>
         </CardBody>
       </Card>
+
+      {/* Delete confirmation modal */}
+      <Modal
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        title="Delete Event"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Are you sure you want to permanently delete this event and all
+            associated data? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setShowDeleteConfirm(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" size="sm" onClick={handleDelete}>
+              Yes, Delete Event
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
