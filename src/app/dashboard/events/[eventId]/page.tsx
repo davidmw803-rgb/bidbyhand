@@ -179,13 +179,13 @@ export default async function EventOverviewPage({
                 <Button type="submit" variant="danger">Close Auction</Button>
               </form>
             )}
-            <Link href={`/events/${params.eventId}/guests`}>
+            <Link href={`/dashboard/events/${params.eventId}/guests`}>
               <Button variant="outline">Send Message</Button>
             </Link>
-            <Link href={`/events/${params.eventId}/items/new`}>
+            <Link href={`/dashboard/events/${params.eventId}/items/new`}>
               <Button variant="outline">Add Item</Button>
             </Link>
-            <Link href={`/events/${params.eventId}/live`}>
+            <Link href={`/dashboard/events/${params.eventId}/live`}>
               <Button variant="secondary">Live Dashboard</Button>
             </Link>
           </div>

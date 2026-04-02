@@ -15,8 +15,8 @@ import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/events', label: 'Events', icon: CalendarDays },
-  { href: '/settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard/events', label: 'Events', icon: CalendarDays },
+  { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 interface OrgSidebarProps {

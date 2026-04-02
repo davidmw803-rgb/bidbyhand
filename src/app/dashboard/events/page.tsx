@@ -89,7 +89,7 @@ export default async function EventsPage({
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Events</h1>
-        <Link href="/events/new">
+        <Link href="/dashboard/events/new">
           <Button>Create Event</Button>
         </Link>
       </div>
@@ -123,7 +123,7 @@ export default async function EventsPage({
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {eventList.map((event) => (
-            <Link key={event.id} href={`/events/${event.id}`}>
+            <Link key={event.id} href={`/dashboard/events/${event.id}`}>
               <Card className="h-full transition-shadow hover:shadow-md">
                 {event.cover_image_url && (
                   <img

@@ -128,7 +128,7 @@ export default function AddItemPage() {
       }
 
       const { data } = await res.json();
-      router.push(`/events/${eventId}/items/${data.id}`);
+      router.push(`/dashboard/events/${eventId}/items/${data.id}`);
     } catch (err) {
       setErrors({
         _form: err instanceof Error ? err.message : 'Something went wrong',
@@ -159,7 +159,7 @@ export default function AddItemPage() {
         throw new Error(error || 'Import failed');
       }
 
-      router.push(`/events/${eventId}/items`);
+      router.push(`/dashboard/events/${eventId}/items`);
     } catch (err) {
       setErrors({
         _form: err instanceof Error ? err.message : 'Import failed',

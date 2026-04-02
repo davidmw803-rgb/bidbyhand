@@ -100,7 +100,7 @@ export default function CreateEventPage() {
       }
 
       const { data } = await res.json();
-      router.push(`/events/${data.id}`);
+      router.push(`/dashboard/events/${data.id}`);
     } catch (err) {
       setErrors({
         _form: err instanceof Error ? err.message : 'Something went wrong',

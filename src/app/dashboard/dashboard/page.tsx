@@ -86,7 +86,7 @@ export default async function DashboardPage() {
             Here is an overview of your auction activity.
           </p>
         </div>
-        <Link href="/events/new">
+        <Link href="/dashboard/events/new">
           <Button>Create Event</Button>
         </Link>
       </div>
@@ -143,7 +143,7 @@ export default async function DashboardPage() {
             recentEvents.map((event) => (
               <Link
                 key={event.id}
-                href={`/events/${event.id}`}
+                href={`/dashboard/events/${event.id}`}
                 className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 sm:px-6"
               >
                 <div className="min-w-0 flex-1">
