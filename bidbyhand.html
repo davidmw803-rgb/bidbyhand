@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BidByHand — Live Auction & Mobile Bidding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1714;
+    --parchment: #f7f4ef;
+    --warm-white: #fdfcfa;
+    --gold: #b8882a;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5ead0;
+    --charcoal: #2e2b27;
+    --muted: #7a736a;
+    --border: rgba(26,23,20,0.12);
+    --radius: 14px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(253,252,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo .logo-mark svg { display: block; }
+
+  .logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--warm-white) !important;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+
+  .nav-cta:hover { background: var(--charcoal) !important; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--ink);
+    color: var(--warm-white);
+    padding: 80px 2rem 0;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,136,42,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+    padding: 6px 16px;
+    border: 1px solid rgba(232,201,122,0.3);
+    border-radius: 999px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(44px, 7vw, 84px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: rgba(253,252,250,0.55);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    max-width: 520px;
+    margin: 0 auto 56px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 6px 6px 6px 20px;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar:focus-within { border-color: rgba(232,201,122,0.5); }
+
+  .search-bar input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #fff;
+    min-width: 0;
+  }
+
+  .search-bar input::placeholder { color: rgba(255,255,255,0.35); }
+
+  .search-btn {
+    background: var(--gold);
+    border: none;
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: var(--gold-light); transform: scale(1.02); }
+
+  /* ─── AUCTION STRIP ─── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .auction-strip {
+    background: var(--parchment);
+    padding: 64px 2rem;
+  }
+
+  .strip-inner { max-width: 1160px; margin: 0 auto; }
+
+  .strip-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 36px;
+  }
+
+  .strip-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .see-all {
+    font-size: 13px;
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+    padding-bottom: 1px;
+  }
+
+  .see-all:hover { border-color: var(--gold); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(26,23,20,0.1);
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    background: var(--gold-pale);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover .card-img img { transform: scale(1.04); }
+
+  .card-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .card-badge.live { background: #d0421e; }
+
+  .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .bid-count {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .card-price {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--gold);
+    font-family: 'Fraunces', serif;
+  }
+
+  .card-org {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .org-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #fff;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .org-name {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ─── APP SECTION ─── */
+  .app-section {
+    background: var(--ink);
+    padding: 80px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--warm-white);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .app-section::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,136,42,0.15);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .app-section::after {
+    content: '';
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    border: 1px solid rgba(184,136,42,0.07);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .app-inner { position: relative; z-index: 1; max-width: 500px; }
+
+  .app-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+
+  .app-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    font-weight: 300;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .app-section h2 em { font-style: italic; color: var(--gold-light); }
+
+  .app-sub {
+    font-size: 15px;
+    color: rgba(253,252,250,0.5);
+    margin-bottom: 36px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .app-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .app-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .app-btn:hover {
+    background: rgba(255,255,255,0.13);
+    border-color: rgba(232,201,122,0.4);
+    transform: translateY(-2px);
+  }
+
+  .app-btn-label { text-align: left; }
+  .app-btn-small { font-size: 10px; color: rgba(253,252,250,0.45); display: block; margin-bottom: 1px; }
+  .app-btn-big { font-size: 15px; font-weight: 500; display: block; }
+
+  /* ─── FEATURES ─── */
+  .features {
+    padding: 96px 2rem;
+    background: var(--warm-white);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-header {
+    max-width: 540px;
+    margin-bottom: 64px;
+  }
+
+  .features-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(32px, 4vw, 50px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .features-header h2 strong {
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .features-header p {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .feature-cell {
+    background: var(--warm-white);
+    padding: 36px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: background 0.2s;
+  }
+
+  .feature-cell:hover { background: var(--parchment); }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--ink);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-cell h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .feature-cell p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .features-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--warm-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: var(--charcoal); transform: translateY(-2px); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 13px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .btn-secondary:hover { background: var(--parchment); border-color: rgba(26,23,20,0.25); }
+
+  /* ─── GRID-LINKS ─── */
+  .links-section {
+    background: var(--parchment);
+    padding: 64px 2rem;
+  }
+
+  .links-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .link-card {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .link-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .link-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,23,20,0.08); }
+  .link-card:hover::before { transform: scaleX(1); }
+
+  .link-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .link-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold);
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(253,252,250,0.5);
+    padding: 48px 2rem 32px;
+  }
+
+  .footer-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 24px;
+  }
+
+  .footer-brand .logo-text { color: var(--warm-white); font-size: 18px; }
+  .footer-brand .logo-text span { color: var(--gold-light); }
+
+  .footer-brand p {
+    font-size: 13px;
+    font-weight: 300;
+    margin-top: 10px;
+    max-width: 220px;
+    line-height: 1.6;
+  }
+
+  .footer-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .footer-col-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(253,252,250,0.3);
+    margin-bottom: 4px;
+  }
+
+  .footer-col a {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(253,252,250,0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--warm-white); }
+
+  .footer-bottom {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .hero h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .search-bar { animation: fadeUp 0.6s 0.3s ease both; }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .hero { padding: 56px 1rem 0; }
+    .links-inner { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 3L5 8h3v5h4V8h3L10 3z" fill="#b8882a"/>
+        <rect x="6" y="14" width="8" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+      </svg>
+    </div>
+    <span class="logo-text">Bid<span>By</span>Hand</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Browse Events</a></li>
+    <li><a href="#">Organizations</a></li>
+    <li><a href="#">Locations</a></li>
+    <li><a href="#">How It Works</a></li>
+    <li><a href="#" class="nav-cta">Host an Event</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Live Bidding, Beautifully Done</div>
+  <h1>Let's get this<br><em>party started</em></h1>
+  <p class="hero-sub">Find an event to support near you</p>
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-right:8px;opacity:0.4">
+      <circle cx="7" cy="7" r="5" stroke="white" stroke-width="1.5"/>
+      <path d="M11 11L14 14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <input type="text" placeholder="Search events, organizations, or items...">
+    <button class="search-btn">Search</button>
+  </div>
+</section>
+
+<!-- AUCTION CARDS -->
+<section class="auction-strip">
+  <div class="strip-inner">
+    <div class="strip-header">
+      <div>
+        <div class="section-label">What's hot right now</div>
+        <h2>Start Bidding Now</h2>
+      </div>
+      <a href="#" class="see-all">View all items →</a>
+    </div>
+
+    <div class="cards-grid">
+
+      <a class="card" href="#">
+        <div class="card-img">
+          <img src="https://cdn.hand.bid/901b1138-6835-44a9-a193-aa3b7a9e69c4/-/quality/smart/-/progressive/yes/-/smart_resize/375x280/-/format/auto/" alt="Brunch at Snooze" onerror="this.style.display='none'">
+          <span class="card-badge live">Live Auction</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="bid-count">200 · 1 bid</span>
+          </div>
+          <div class="card-title">Brunch at Snooze</div>
+          <div class="card-price">$425</div>
+          <div class="card-org">
+            <div class="org-avatar">HD</div>
+            <span class="org-name">Demo Auction</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img" style="background:#e8ded0;">
+          <img src="https://cdn.hand.bid/73d385b6-2c5d-4159-95ab-524447f196d9/-/quality/smart/-/progressive/yes/-/smart_resize/375x280/-/format/auto/" alt="American Girl Doll" onerror="this.style.display='none'">
+          <span class="card-badge">Sports</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="bid-count">#1527904 · 0 bids</span>
+          </div>
+          <div class="card-title">American Girl Doll – Lea</div>
+          <div class="card-price">$20</div>
+          <div class="card-org">
+            <div class="org-avatar">HD</div>
+            <span class="org-name">Demo Auction</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img">
+          <img src="https://cdn.hand.bid/901b1138-6835-44a9-a193-aa3b7a9e69c4/-/quality/smart/-/progressive/yes/-/smart_resize/375x280/-/format/auto/" alt="Brunch at Snooze copy" onerror="this.style.display='none'">
+          <span class="card-badge live">Live Auction</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="bid-count">#1789134 · 0 bids</span>
+          </div>
+          <div class="card-title">Brunch at Snooze</div>
+          <div class="card-price">$500</div>
+          <div class="card-org">
+            <div class="org-avatar">HD</div>
+            <span class="org-name">Demo Auction</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img" style="background:#d8e4dc;">
+          <img src="https://cdn.hand.bid/c6eaf08b-cc88-4faf-9f24-5f458e6ffca8/-/quality/smart/-/progressive/yes/-/smart_resize/375x280/-/format/auto/" alt="St Michael's Getaway" onerror="this.style.display='none'">
+          <span class="card-badge">Travel & Adventure</span>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="bid-count">409 · 0 bids</span>
+          </div>
+          <div class="card-title">St. Michael's Getaway</div>
+          <div class="card-price">$200</div>
+          <div class="card-org">
+            <div class="org-avatar">DD</div>
+            <span class="org-name">Diana's Demo Auction</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section class="app-section">
+  <div class="app-inner">
+    <div class="app-eyebrow">Mobile Bidding</div>
+    <h2>Finally — <em>everything</em><br>in one place</h2>
+    <p class="app-sub">Download the BidByHand app and bid on the go with a super intuitive interface and instant push alerts.</p>
+    <div class="app-buttons">
+      <a href="#" class="app-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        <div class="app-btn-label">
+          <span class="app-btn-small">Download on the</span>
+          <span class="app-btn-big">App Store</span>
+        </div>
+      </a>
+      <a href="#" class="app-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M3.18 23.76c.3.16.64.2.96.12l12.15-7.02-2.56-2.55-10.55 9.45zm-1.7-20.1C1.2 4.04 1 4.5 1 5.14v13.72c0 .64.2 1.1.48 1.48l.08.07 7.69-7.69v-.18L1.56 3.59l-.08.07zm17.52 9.4l-2.18-1.26-2.87 2.87 2.87 2.87 2.19-1.27c.62-.36.62-.94 0-1.21h-.01zM4.14.22L16.29 7.24l-2.56 2.56L3.18.35A1.17 1.17 0 014.14.22z"/></svg>
+        <div class="app-btn-label">
+          <span class="app-btn-small">Get it on</span>
+          <span class="app-btn-big">Google Play</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div style="background:var(--warm-white);padding:0 2rem;">
+  <section class="features">
+    <div class="features-header">
+      <div class="section-label" style="max-width:280px;">Why BidByHand</div>
+      <h2>The <strong>smartest</strong> way to raise more money at every auction</h2>
+      <p>Host your next event with BidByHand. Your budget and your bidders will thank you.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-cell">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="4" width="5" height="5" rx="1" fill="var(--gold)"/><rect x="11" y="4" width="5" height="5" rx="1" fill="rgba(255,255,255,0.4)"/><rect x="4" y="11" width="5" height="5" rx="1" fill="rgba(255,255,255,0.4)"/><rect x="11" y="11" width="5" height="5" rx="1" fill="rgba(255,255,255,0.2)"/></svg>
+        </div>
+        <h3>Fine-tune auction item display</h3>
+        <p>Showcase items beautifully across all devices with flexible layout controls.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3a7 7 0 100 14A7 7 0 0010 3z" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Send alerts & push notifications</h3>
+        <p>Keep bidders engaged with real-time outbid alerts and event announcements.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14l4-4 3 3 5-6" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Track real-time performance</h3>
+        <p>Monitor bids, revenue, and bidder activity live from your event dashboard.</p>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="9" width="14" height="9" rx="2" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><path d="M7 9V6a3 3 0 016 0v3" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Automated bidder checkout</h3>
+        <p>Seamless payment processing so winners check out in seconds, not minutes.</p>
+      </div>
+    </div>
+
+    <div class="features-cta-row">
+      <a href="#" class="btn-primary">
+        Create an Event
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" class="btn-secondary">Learn how it works</a>
+    </div>
+  </section>
+</div>
+
+<!-- LINKS GRID -->
+<section class="links-section">
+  <div class="links-inner">
+    <a href="#" class="link-card">
+      <h3>Locations</h3>
+      <p>Browse BidByHand events listed by state. Find a cause near you worth bidding for.</p>
+      <span class="link-arrow">See all locations →</span>
+    </a>
+    <a href="#" class="link-card">
+      <h3>Organizations</h3>
+      <p>Check out all organizations hosting events with BidByHand across the country.</p>
+      <span class="link-arrow">See all organizations →</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-text">Bid<span>By</span>Hand</span>
+      <p>Live auction & mobile bidding software for organizations that want to raise more.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Platform</div>
+      <a href="#">Browse Events</a>
+      <a href="#">Locations</a>
+      <a href="#">Organizations</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Hosts</div>
+      <a href="#">Create an Event</a>
+      <a href="#">Pricing</a>
+      <a href="#">Features</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 BidByHand. All rights reserved.</span>
+    <span>Made with care for great causes.</span>
+  </div>
+</footer>
+
+</body>
+</html>
