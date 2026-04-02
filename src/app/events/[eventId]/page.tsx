@@ -19,14 +19,14 @@ import type { Event, TicketType, Item } from '@/types';
 export default async function EventPage({
   params,
 }: {
-  params: { slug: string };
+  params: { eventId: string };
 }) {
   const supabase = createServerSupabase();
 
   const { data: event } = await supabase
     .from('events')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', params.eventId)
     .in('status', ['published', 'active', 'closed'])
     .single<Event>();
 
@@ -128,25 +128,25 @@ export default async function EventPage({
 
         {/* Quick Action Buttons */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Link href={`/events/${params.slug}/register`}>
+          <Link href={`/events/${params.eventId}/register`}>
             <Button variant="primary" className="w-full touch-target">
               <Ticket className="h-4 w-4" />
               Buy Tickets
             </Button>
           </Link>
-          <Link href={`/events/${params.slug}/items`}>
+          <Link href={`/events/${params.eventId}/items`}>
             <Button variant="outline" className="w-full touch-target">
               <Gavel className="h-4 w-4" />
               Browse Items
             </Button>
           </Link>
-          <Link href={`/events/${params.slug}/donate`}>
+          <Link href={`/events/${params.eventId}/donate`}>
             <Button variant="outline" className="w-full touch-target">
               <Gift className="h-4 w-4" />
               Donate
             </Button>
           </Link>
-          <Link href={`/events/${params.slug}/my-bids`}>
+          <Link href={`/events/${params.eventId}/my-bids`}>
             <Button variant="ghost" className="w-full touch-target">
               My Bids
             </Button>
@@ -184,7 +184,7 @@ export default async function EventPage({
                             {soldOut ? 'Sold out' : `${available} remaining`}
                           </span>
                         )}
-                        <Link href={`/events/${params.slug}/register?ticket=${tt.id}`}>
+                        <Link href={`/events/${params.eventId}/register?ticket=${tt.id}`}>
                           <Button size="sm" disabled={soldOut}>
                             {soldOut ? 'Sold Out' : 'Select'}
                           </Button>
@@ -204,7 +204,7 @@ export default async function EventPage({
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-bold text-gray-900">Auction Items</h2>
               <Link
-                href={`/events/${params.slug}/items`}
+                href={`/events/${params.eventId}/items`}
                 className="flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
               >
                 View All <ArrowRight className="h-4 w-4" />
@@ -216,8 +216,8 @@ export default async function EventPage({
                   key={item.id}
                   href={
                     isActive
-                      ? `/events/${params.slug}/items/${item.id}`
-                      : `/events/${params.slug}/items`
+                      ? `/events/${params.eventId}/items/${item.id}`
+                      : `/events/${params.eventId}/items`
                   }
                   className="card-auction group"
                 >
@@ -267,7 +267,7 @@ export default async function EventPage({
               <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">
                 Every dollar counts. Support this cause with a direct donation.
               </p>
-              <Link href={`/events/${params.slug}/donate`}>
+              <Link href={`/events/${params.eventId}/donate`}>
                 <Button size="lg" className="mt-6">
                   Donate Now
                   <Heart className="h-4 w-4" />

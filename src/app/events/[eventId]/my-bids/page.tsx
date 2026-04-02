@@ -22,7 +22,7 @@ type BidGroup = 'winning' | 'outbid' | 'won';
 
 export default function MyBidsPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
 
   const [bids, setBids] = useState<BidWithItem[]>([]);
   const [loading, setLoading] = useState(true);

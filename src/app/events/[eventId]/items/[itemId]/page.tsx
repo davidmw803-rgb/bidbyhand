@@ -27,7 +27,7 @@ import type { Event, Item, Bid, Guest } from '@/types';
 
 export default function ItemBiddingPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
   const itemId = params.itemId as string;
   const { toast } = useToast();
 

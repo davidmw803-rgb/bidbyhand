@@ -14,7 +14,7 @@ const PRESET_AMOUNTS = [2500, 5000, 10000, 25000, 50000, 100000]; // in cents
 
 export default function DonatePage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
   const { toast } = useToast();
 
   const [event, setEvent] = useState<Event | null>(null);
