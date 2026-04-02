@@ -254,7 +254,7 @@ export default function DonatePage() {
             variant="textarea"
             placeholder="Leave a message of support..."
             value={message}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessage((e.target as HTMLTextAreaElement).value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
           />
           <label className="flex items-center gap-3 cursor-pointer touch-target">
             <input

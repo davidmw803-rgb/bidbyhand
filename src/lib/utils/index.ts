@@ -7,16 +7,23 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /** Format cents to dollar string */
-export function formatCurrency(cents: number): string {
+export function formatCurrency(cents: number, currency: string = 'USD'): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency,
   }).format(cents / 100);
 }
 
-/** Format a date for display */
-export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions): string {
+/** Format a date for display. Accepts Intl options or a shorthand string like 'h:mm a'. */
+export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
+  if (typeof options === 'string') {
+    // Shorthand format strings
+    if (options === 'h:mm a') {
+      return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    }
+    return d.toLocaleString('en-US');
+  }
   return d.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -58,13 +65,13 @@ export function slugify(text: string): string {
 }
 
 /** Calculate the next valid bid amount for an item */
-export function getNextBidAmount(currentBid: number, startingBid: number, bidIncrement: number): number {
-  if (currentBid === 0) return startingBid;
+export function getNextBidAmount(currentBid: number | null, startingBid: number, bidIncrement: number): number {
+  if (!currentBid || currentBid === 0) return startingBid;
   return currentBid + bidIncrement;
 }
 
 /** Check if a bid amount is valid */
-export function isValidBid(amount: number, currentBid: number, startingBid: number, bidIncrement: number): boolean {
+export function isValidBid(amount: number, currentBid: number | null, startingBid: number, bidIncrement: number): boolean {
   const minimumBid = getNextBidAmount(currentBid, startingBid, bidIncrement);
   return amount >= minimumBid;
 }

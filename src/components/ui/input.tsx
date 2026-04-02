@@ -1,33 +1,15 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export type InputProps = {
   label?: string;
   error?: string;
   helperText?: string;
-  variant?: 'text' | 'email' | 'phone' | 'number';
-}
-
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  variant?: 'textarea';
-}
-
-export interface SelectProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  variant?: 'select';
+  variant?: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'select';
   options?: { value: string; label: string }[];
-}
-
-type FormInputProps = (InputProps | TextareaProps | SelectProps) & {
-  onChange?: (e: React.ChangeEvent<HTMLInputElement & HTMLTextAreaElement & HTMLSelectElement>) => void;
+  className?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 };
 
 const baseInputStyles =
@@ -38,45 +20,37 @@ const stateStyles = {
   error: 'border-red-500 focus:border-red-500 focus:ring-red-500',
 };
 
-const Input = React.forwardRef<
-  HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
-  FormInputProps
->((props, ref) => {
-  const { label, error, helperText, variant = 'text', className, ...rest } = props;
+function Input(props: InputProps) {
+  const { label, error, helperText, variant = 'text', className, options = [], children, ...rest } = props;
   const id = rest.id || rest.name;
   const state = error ? 'error' : 'default';
-
   const inputClasses = cn(baseInputStyles, stateStyles[state], className);
 
   const renderInput = () => {
     if (variant === 'textarea') {
-      const { ...textareaRest } = rest as TextareaProps;
       return (
         <textarea
-          ref={ref as React.Ref<HTMLTextAreaElement>}
           id={id}
           rows={4}
           className={inputClasses}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          {...textareaRest}
+          {...rest}
         />
       );
     }
 
     if (variant === 'select') {
-      const { options = [], children, ...selectRest } = rest as SelectProps;
       return (
         <select
-          ref={ref as React.Ref<HTMLSelectElement>}
           id={id}
           className={inputClasses}
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
-          {...selectRest}
+          {...rest}
         >
           {children ??
-            options.map((opt) => (
+            options.map((opt: { value: string; label: string }) => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}
               </option>
@@ -92,16 +66,14 @@ const Input = React.forwardRef<
       number: 'number',
     };
 
-    const { ...inputRest } = rest as InputProps;
     return (
       <input
-        ref={ref as React.Ref<HTMLInputElement>}
         id={id}
-        type={typeMap[variant] || 'text'}
+        type={rest.type || typeMap[variant] || 'text'}
         className={inputClasses}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : undefined}
-        {...inputRest}
+        {...rest}
       />
     );
   };
@@ -127,7 +99,7 @@ const Input = React.forwardRef<
       )}
     </div>
   );
-});
+}
 
 Input.displayName = 'Input';
 

@@ -39,5 +39,5 @@ export function useCountdown(endsAt: string | Date): CountdownResult {
   else if (minutes > 0) display = `${minutes}m ${seconds}s`;
   else display = `${seconds}s`;
 
-  return { days, hours, minutes, seconds, isExpired, isUrgent, display };
+  return { days, hours, minutes, seconds, isExpired: false, isUrgent, display };
 }
