@@ -203,7 +203,7 @@ export default function AddItemPage() {
               name="csv"
               variant="textarea"
               value={csvText}
-              onChange={(e) => setCsvText(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCsvText(e.target.value)}
               placeholder="lot_number,title,description,type,starting_bid&#10;001,Painting,Beautiful art,silent,100"
             />
             <div className="flex justify-end gap-3">
@@ -231,7 +231,7 @@ export default function AddItemPage() {
                   label="Lot Number"
                   name="lot_number"
                   value={form.lot_number}
-                  onChange={(e) => updateField('lot_number', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('lot_number', e.target.value)}
                   error={errors.lot_number}
                   placeholder="001"
                 />
@@ -240,7 +240,7 @@ export default function AddItemPage() {
                   name="type"
                   variant="select"
                   value={form.type}
-                  onChange={(e) => updateField('type', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('type', e.target.value)}
                   options={ITEM_TYPES}
                 />
               </div>
@@ -248,7 +248,7 @@ export default function AddItemPage() {
                 label="Title"
                 name="title"
                 value={form.title}
-                onChange={(e) => updateField('title', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('title', e.target.value)}
                 error={errors.title}
                 placeholder="Weekend Getaway Package"
               />
@@ -257,7 +257,7 @@ export default function AddItemPage() {
                 name="description"
                 variant="textarea"
                 value={form.description}
-                onChange={(e) => updateField('description', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('description', e.target.value)}
                 placeholder="Describe the item..."
               />
               <Input
@@ -265,7 +265,7 @@ export default function AddItemPage() {
                 name="category"
                 variant="select"
                 value={form.category}
-                onChange={(e) => updateField('category', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('category', e.target.value)}
                 options={[
                   { value: '', label: 'Select a category' },
                   ...CATEGORY_PRESETS.map((c) => ({ value: c, label: c })),
@@ -283,7 +283,7 @@ export default function AddItemPage() {
                 label="Primary Photo URL"
                 name="photo_url"
                 value={form.photo_url}
-                onChange={(e) => updateField('photo_url', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('photo_url', e.target.value)}
                 placeholder="https://..."
               />
               <Input
@@ -291,7 +291,7 @@ export default function AddItemPage() {
                 name="gallery_urls"
                 variant="textarea"
                 value={form.gallery_urls}
-                onChange={(e) => updateField('gallery_urls', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('gallery_urls', e.target.value)}
                 placeholder="https://...&#10;https://..."
               />
             </CardBody>
@@ -308,7 +308,7 @@ export default function AddItemPage() {
                   name="fair_market_value"
                   variant="number"
                   value={form.fair_market_value}
-                  onChange={(e) =>
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     updateField('fair_market_value', e.target.value)
                   }
                   placeholder="500"
@@ -318,7 +318,7 @@ export default function AddItemPage() {
                   name="starting_bid"
                   variant="number"
                   value={form.starting_bid}
-                  onChange={(e) => updateField('starting_bid', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('starting_bid', e.target.value)}
                   error={errors.starting_bid}
                   placeholder="100"
                 />
@@ -329,7 +329,7 @@ export default function AddItemPage() {
                   name="bid_increment"
                   variant="number"
                   value={form.bid_increment}
-                  onChange={(e) => updateField('bid_increment', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('bid_increment', e.target.value)}
                   placeholder="25"
                   helperText="Leave blank to use event default"
                 />
@@ -338,7 +338,7 @@ export default function AddItemPage() {
                   name="buy_now_price"
                   variant="number"
                   value={form.buy_now_price}
-                  onChange={(e) => updateField('buy_now_price', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('buy_now_price', e.target.value)}
                   placeholder="1000"
                   helperText="Optional instant purchase price"
                 />
@@ -355,7 +355,7 @@ export default function AddItemPage() {
                 label="Donor / Consignment Name"
                 name="donor_name"
                 value={form.donor_name}
-                onChange={(e) => updateField('donor_name', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('donor_name', e.target.value)}
                 placeholder="Jane Smith"
               />
               <Input
@@ -363,7 +363,7 @@ export default function AddItemPage() {
                 name="donor_email"
                 variant="email"
                 value={form.donor_email}
-                onChange={(e) => updateField('donor_email', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('donor_email', e.target.value)}
                 placeholder="jane@example.com"
               />
             </CardBody>

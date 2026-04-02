@@ -270,7 +270,7 @@ export default function EventRegisterPage() {
                 name="firstName"
                 placeholder="Jane"
                 value={guestInfo.firstName}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setGuestInfo((g) => ({ ...g, firstName: (e.target as HTMLInputElement).value }))
                 }
                 error={errors.firstName}
@@ -280,7 +280,7 @@ export default function EventRegisterPage() {
                 name="lastName"
                 placeholder="Smith"
                 value={guestInfo.lastName}
-                onChange={(e) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setGuestInfo((g) => ({ ...g, lastName: (e.target as HTMLInputElement).value }))
                 }
                 error={errors.lastName}
@@ -292,7 +292,7 @@ export default function EventRegisterPage() {
               name="email"
               placeholder="jane@example.com"
               value={guestInfo.email}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setGuestInfo((g) => ({ ...g, email: (e.target as HTMLInputElement).value }))
               }
               error={errors.email}
@@ -303,7 +303,7 @@ export default function EventRegisterPage() {
               name="phone"
               placeholder="+1 (555) 123-4567"
               value={guestInfo.phone}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setGuestInfo((g) => ({ ...g, phone: (e.target as HTMLInputElement).value }))
               }
               error={errors.phone}
@@ -314,7 +314,7 @@ export default function EventRegisterPage() {
               placeholder="Optional"
               helperText="Let us know about any dietary needs"
               value={guestInfo.dietary}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setGuestInfo((g) => ({ ...g, dietary: (e.target as HTMLInputElement).value }))
               }
             />

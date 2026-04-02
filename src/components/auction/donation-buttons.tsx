@@ -97,7 +97,7 @@ export function DonationButtons({
             type="number"
             placeholder="Other amount"
             value={customAmount}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setCustomAmount(e.target.value);
               setSelectedAmount(null);
             }}
@@ -114,7 +114,7 @@ export function DonationButtons({
           <input
             type="checkbox"
             checked={isAnonymous}
-            onChange={(e) => setIsAnonymous(e.target.checked)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsAnonymous(e.target.checked)}
             className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
           />
           Make donation anonymous
@@ -133,7 +133,7 @@ export function DonationButtons({
             type="text"
             placeholder="In honor / memory of..."
             value={tributeName}
-            onChange={(e) => setTributeName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTributeName(e.target.value)}
             className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none text-sm"
           />
         )}

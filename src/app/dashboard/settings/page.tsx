@@ -242,21 +242,21 @@ export default function OrgSettingsPage() {
               label="Organization Name"
               name="name"
               value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('name', e.target.value)}
               error={errors.name}
             />
             <Input
               label="Logo URL"
               name="logo_url"
               value={form.logo_url}
-              onChange={(e) => updateField('logo_url', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('logo_url', e.target.value)}
               placeholder="https://..."
             />
             <Input
               label="EIN (Tax ID)"
               name="ein"
               value={form.ein}
-              onChange={(e) => updateField('ein', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('ein', e.target.value)}
               placeholder="XX-XXXXXXX"
               helperText="Required for tax-deductible donation receipts"
             />
@@ -264,7 +264,7 @@ export default function OrgSettingsPage() {
               label="Website"
               name="website"
               value={form.website}
-              onChange={(e) => updateField('website', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('website', e.target.value)}
               placeholder="https://yourorg.org"
             />
           </CardBody>
@@ -326,7 +326,7 @@ export default function OrgSettingsPage() {
                 <div className="flex items-center gap-2">
                   <select
                     value={member.role}
-                    onChange={(e) =>
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleChangeRole(
                         member.id,
                         e.target.value as OrgMemberRole
@@ -369,7 +369,7 @@ export default function OrgSettingsPage() {
             name="invite_email"
             variant="email"
             value={inviteForm.email}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setInviteForm((prev) => ({ ...prev, email: e.target.value }))
             }
             placeholder="team@example.com"
@@ -378,7 +378,7 @@ export default function OrgSettingsPage() {
             label="Display Name"
             name="invite_name"
             value={inviteForm.display_name}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setInviteForm((prev) => ({
                 ...prev,
                 display_name: e.target.value,
@@ -391,7 +391,7 @@ export default function OrgSettingsPage() {
             name="invite_role"
             variant="select"
             value={inviteForm.role}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setInviteForm((prev) => ({
                 ...prev,
                 role: e.target.value as OrgMemberRole,

@@ -52,7 +52,7 @@ function OrganizerLogin() {
         name="email"
         placeholder="you@organization.org"
         value={email}
-        onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         error={errors.email}
       />
       <Input
@@ -61,7 +61,7 @@ function OrganizerLogin() {
         type="password"
         placeholder="Enter your password"
         value={password}
-        onChange={(e) => setPassword((e.target as HTMLInputElement).value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
         error={errors.password}
       />
       <div className="flex items-center justify-between">
@@ -198,7 +198,7 @@ function BidderLogin() {
           name="otp"
           placeholder="123456"
           value={otp}
-          onChange={(e) => setOtp((e.target as HTMLInputElement).value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOtp((e.target as HTMLInputElement).value)}
           className="text-center text-2xl tracking-widest"
         />
         <Button type="submit" loading={verifying} className="w-full">
@@ -243,7 +243,7 @@ function BidderLogin() {
           name="bidder-email"
           placeholder="your@email.com"
           value={email}
-          onChange={(e) => setEmail((e.target as HTMLInputElement).value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         />
       ) : (
         <Input
@@ -252,7 +252,7 @@ function BidderLogin() {
           name="bidder-phone"
           placeholder="+1 (555) 123-4567"
           value={phone}
-          onChange={(e) => setPhone((e.target as HTMLInputElement).value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPhone((e.target as HTMLInputElement).value)}
         />
       )}
 
