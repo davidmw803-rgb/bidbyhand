@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs } from '@/components/ui/tabs';
 import { DataTable, type Column } from '@/components/ui/data-table';
 import { ReportsClient } from './reports-client';
+export const dynamic = 'force-dynamic';
 
 export default async function ReportsPage({
   params,

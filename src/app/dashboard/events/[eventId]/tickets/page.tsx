@@ -6,6 +6,7 @@ import { Card, CardBody, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { DataTable, type Column } from '@/components/ui/data-table';
 import { TicketFormSection } from './ticket-form';
+export const dynamic = 'force-dynamic';
 
 export default async function TicketsPage({
   params,

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable, type Column } from '@/components/ui/data-table';
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 
 const categoryVariant: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'neutral'> = {
   vip: 'warning',
