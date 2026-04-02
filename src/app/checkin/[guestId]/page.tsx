@@ -1,183 +1,262 @@
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { createServerSupabase } from '@/lib/supabase/server';
-import { formatDateTime } from '@/lib/utils';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
+import { formatDate } from '@/lib/utils';
+import { Button, Card, CardBody, Badge } from '@/components/ui';
+import { useToast } from '@/components/ui/toast';
+import {
+  UserCheck,
+  CheckCircle,
+  Ticket,
+  Hash,
+  Mail,
+  Phone,
+  AlertCircle,
+  Heart,
+} from 'lucide-react';
 import type { Guest, TicketType, Event } from '@/types';
-import { Badge } from '@/components/ui/badge';
-import { Avatar } from '@/components/ui/avatar';
-import { Card, CardBody } from '@/components/ui/card';
-import { CheckInButton } from './checkin-button';
 
-export default async function CheckInPage({
-  params,
-}: {
-  params: { guestId: string };
-}) {
-  const supabase = createServerSupabase();
+export default function CheckInPage() {
+  const params = useParams();
+  const guestIdParam = params.guestId as string;
+  const { toast } = useToast();
 
-  const { data: guest } = await supabase
-    .from('guests')
-    .select('*')
-    .eq('id', params.guestId)
-    .single();
+  const [guest, setGuest] = useState<Guest | null>(null);
+  const [ticketType, setTicketType] = useState<TicketType | null>(null);
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [checking, setChecking] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!guest) redirect('/');
-  const g = guest as Guest;
+  useEffect(() => {
+    async function load() {
+      const supabase = createClient();
 
-  // Fetch event and ticket type in parallel
-  const [eventRes, ticketRes] = await Promise.all([
-    supabase.from('events').select('*').eq('id', g.event_id).single(),
-    g.ticket_type_id
-      ? supabase
-          .from('ticket_types')
-          .select('*')
-          .eq('id', g.ticket_type_id)
-          .single()
-      : Promise.resolve({ data: null }),
-  ]);
+      const { data: guestData, error } = await supabase
+        .from('guests')
+        .select('*')
+        .eq('id', guestIdParam)
+        .single<Guest>();
 
-  const event = eventRes.data as Event | null;
-  const ticketType = ticketRes.data as TicketType | null;
+      if (error || !guestData) {
+        setNotFound(true);
+        setLoading(false);
+        return;
+      }
+      setGuest(guestData);
 
-  if (!event) redirect('/');
+      // Fetch event and ticket info in parallel
+      const [eventRes, ticketRes] = await Promise.all([
+        supabase.from('events').select('*').eq('id', guestData.event_id).single<Event>(),
+        guestData.ticket_type_id
+          ? supabase.from('ticket_types').select('*').eq('id', guestData.ticket_type_id).single<TicketType>()
+          : Promise.resolve({ data: null }),
+      ]);
 
-  const fullName = `${g.first_name} ${g.last_name}`;
+      if (eventRes.data) setEvent(eventRes.data);
+      if (ticketRes.data) setTicketType(ticketRes.data);
+
+      setLoading(false);
+    }
+    load();
+  }, [guestIdParam]);
+
+  async function handleCheckIn() {
+    if (!guest) return;
+    setChecking(true);
+
+    try {
+      const res = await fetch(
+        `/api/events/${guest.event_id}/guests/${guest.id}/checkin`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      const result = await res.json();
+      if (!res.ok) {
+        toast('error', result.error || 'Check-in failed');
+        return;
+      }
+
+      setGuest((prev) =>
+        prev
+          ? { ...prev, checked_in: true, checked_in_at: new Date().toISOString() }
+          : prev
+      );
+      toast('success', `${guest.first_name} ${guest.last_name} checked in!`);
+    } catch {
+      toast('error', 'Check-in failed. Please try again.');
+    } finally {
+      setChecking(false);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+        <div className="w-full max-w-sm space-y-4">
+          <div className="skeleton h-10 w-48 mx-auto" />
+          <div className="skeleton h-48 w-full" />
+          <div className="skeleton h-14 w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  if (notFound) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+        <Card variant="bordered" className="w-full max-w-sm">
+          <CardBody className="text-center py-8">
+            <AlertCircle className="mx-auto h-12 w-12 text-red-400 mb-3" />
+            <h1 className="text-lg font-bold text-gray-900">Guest Not Found</h1>
+            <p className="mt-2 text-sm text-gray-500">
+              This QR code may be invalid or expired.
+            </p>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+  const isCheckedIn = guest?.checked_in;
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-6 sm:py-10">
-      <div className="mx-auto max-w-md space-y-6">
-        {/* Event context */}
-        <div className="text-center">
-          <p className="text-sm font-medium text-gray-500">{event.name}</p>
-          <h1 className="mt-1 text-sm text-gray-400">Guest Check-In</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-sm space-y-4">
+        {/* Logo */}
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <Heart className="h-6 w-6 text-brand-600" fill="currentColor" />
+          <span className="text-lg font-bold text-gray-900">BidByHand</span>
         </div>
 
-        {/* Guest card */}
+        {/* Event Info */}
+        {event && (
+          <p className="text-center text-sm text-gray-500">{event.name}</p>
+        )}
+
+        {/* Guest Card */}
         <Card variant="elevated">
-          <CardBody className="space-y-6">
-            {/* Avatar and name */}
-            <div className="flex flex-col items-center text-center">
-              <Avatar name={fullName} size="lg" className="mb-3" />
-              <h2 className="text-2xl font-bold text-gray-900">{fullName}</h2>
-              <p className="text-sm text-gray-500">{g.email}</p>
-              {g.phone && (
-                <p className="text-sm text-gray-400">{g.phone}</p>
-              )}
+          <CardBody className="space-y-4">
+            {/* Status */}
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-bold text-gray-900">
+                {guest?.first_name} {guest?.last_name}
+              </h1>
+              <Badge variant={isCheckedIn ? 'success' : 'warning'}>
+                {isCheckedIn ? 'Checked In' : 'Not Checked In'}
+              </Badge>
             </div>
 
             {/* Details */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Ticket Type
-                </p>
-                <p className="mt-1 text-sm font-medium text-gray-900">
-                  {ticketType?.name || 'General'}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Paddle Number
-                </p>
-                <p className="mt-1 text-sm font-medium text-gray-900">
-                  {g.paddle_number ? `#${g.paddle_number}` : 'Not assigned'}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Category
-                </p>
-                <Badge
-                  variant={
-                    g.category === 'vip'
-                      ? 'warning'
-                      : g.category === 'sponsor'
-                      ? 'info'
-                      : 'neutral'
-                  }
-                  className="mt-1"
-                >
-                  {g.category}
-                </Badge>
-              </div>
-              {g.table_assignment && (
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                    Table
-                  </p>
-                  <p className="mt-1 text-sm font-medium text-gray-900">
-                    {g.table_assignment}
-                  </p>
+            <div className="space-y-2.5">
+              {guest?.paddle_number && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Hash className="h-4 w-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-400">Paddle Number</p>
+                    <p className="text-2xl font-bold text-brand-700">{guest.paddle_number}</p>
+                  </div>
                 </div>
               )}
-            </div>
 
-            {/* Check-in status */}
-            <div className="rounded-lg border p-4">
-              {g.checked_in ? (
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100">
-                    <svg
-                      className="h-6 w-6 text-green-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
+              {ticketType && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Ticket className="h-4 w-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-400">Ticket Type</p>
+                    <p className="font-medium text-gray-900">{ticketType.name}</p>
+                  </div>
+                </div>
+              )}
+
+              {guest?.email && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Mail className="h-4 w-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-400">Email</p>
+                    <p className="text-gray-600">{guest.email}</p>
+                  </div>
+                </div>
+              )}
+
+              {guest?.phone && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Phone className="h-4 w-4 text-gray-400" />
+                  <div>
+                    <p className="text-xs text-gray-400">Phone</p>
+                    <p className="text-gray-600">{guest.phone}</p>
+                  </div>
+                </div>
+              )}
+
+              {guest?.table_assignment && (
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="flex h-4 w-4 items-center justify-center text-gray-400 text-xs font-bold">
+                    T
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-green-800">
-                      Checked In
-                    </p>
-                    {g.checked_in_at && (
-                      <p className="text-xs text-gray-500">
-                        {formatDateTime(g.checked_in_at)}
-                      </p>
-                    )}
+                    <p className="text-xs text-gray-400">Table</p>
+                    <p className="font-medium text-gray-900">{guest.table_assignment}</p>
                   </div>
                 </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-sm text-gray-500 text-center">
-                    This guest has not been checked in yet.
-                  </p>
-                  <CheckInButton
-                    eventId={g.event_id}
-                    guestId={g.id}
-                  />
+              )}
+
+              {guest?.category && (
+                <div className="flex items-center gap-3 text-sm">
+                  <Badge
+                    variant={
+                      guest.category === 'vip'
+                        ? 'warning'
+                        : guest.category === 'sponsor'
+                          ? 'info'
+                          : 'neutral'
+                    }
+                  >
+                    {guest.category.toUpperCase()}
+                  </Badge>
                 </div>
               )}
             </div>
 
+            {/* Check-in time */}
+            {isCheckedIn && guest?.checked_in_at && (
+              <p className="text-xs text-gray-400">
+                Checked in at {formatDate(guest.checked_in_at, 'h:mm a')}
+              </p>
+            )}
+
             {/* Notes */}
-            {g.notes && (
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Notes
-                </p>
-                <p className="mt-1 rounded-lg bg-gray-50 p-3 text-sm text-gray-700">
-                  {g.notes}
-                </p>
+            {guest?.notes && (
+              <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-3">
+                <p className="text-xs font-medium text-yellow-800">Notes</p>
+                <p className="text-sm text-yellow-700">{guest.notes}</p>
               </div>
             )}
           </CardBody>
         </Card>
 
-        {/* Back link */}
-        <div className="text-center">
-          <Link
-            href={`/events/${g.event_id}/guests`}
-            className="text-sm font-medium text-brand-600 hover:text-brand-700"
+        {/* Check In Button */}
+        {isCheckedIn ? (
+          <div className="flex items-center justify-center gap-2 rounded-xl bg-green-50 border border-green-200 py-4 text-green-700">
+            <CheckCircle className="h-5 w-5" />
+            <span className="font-semibold">Already Checked In</span>
+          </div>
+        ) : (
+          <Button
+            onClick={handleCheckIn}
+            loading={checking}
+            size="lg"
+            className="w-full touch-target text-lg"
           >
-            Back to Guest List
-          </Link>
-        </div>
+            <UserCheck className="h-5 w-5" />
+            Check In
+          </Button>
+        )}
       </div>
     </div>
   );
