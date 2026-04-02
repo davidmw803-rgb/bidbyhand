@@ -228,7 +228,7 @@ export default function DonatePage() {
               type="number"
               placeholder="0.00"
               value={customAmount}
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setCustomAmount(e.target.value);
                 setAmount(null);
               }}
@@ -246,7 +246,7 @@ export default function DonatePage() {
             name="donor-name"
             placeholder="Your name"
             value={name}
-            onChange={(e) => setName((e.target as HTMLInputElement).value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName((e.target as HTMLInputElement).value)}
           />
           <Input
             label="Message (optional)"
@@ -254,13 +254,13 @@ export default function DonatePage() {
             variant="textarea"
             placeholder="Leave a message of support..."
             value={message}
-            onChange={(e) => setMessage((e.target as HTMLTextAreaElement).value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMessage((e.target as HTMLTextAreaElement).value)}
           />
           <label className="flex items-center gap-3 cursor-pointer touch-target">
             <input
               type="checkbox"
               checked={anonymous}
-              onChange={(e) => setAnonymous(e.target.checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAnonymous(e.target.checked)}
               className="h-5 w-5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
             />
             <span className="text-sm text-gray-700">Make my donation anonymous</span>

@@ -226,7 +226,7 @@ export default function EventSettingsPage() {
               label="Event Name"
               name="name"
               value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('name', e.target.value)}
               error={errors.name}
             />
             <Input
@@ -234,7 +234,7 @@ export default function EventSettingsPage() {
               name="type"
               variant="select"
               value={form.type}
-              onChange={(e) => updateField('type', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('type', e.target.value)}
               options={EVENT_TYPES}
             />
             <Input
@@ -242,7 +242,7 @@ export default function EventSettingsPage() {
               name="description"
               variant="textarea"
               value={form.description}
-              onChange={(e) => updateField('description', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('description', e.target.value)}
             />
           </CardBody>
         </Card>
@@ -258,7 +258,7 @@ export default function EventSettingsPage() {
                 name="start_time"
                 type="datetime-local"
                 value={form.start_time}
-                onChange={(e) => updateField('start_time', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('start_time', e.target.value)}
                 error={errors.start_time}
               />
               <Input
@@ -266,7 +266,7 @@ export default function EventSettingsPage() {
                 name="end_time"
                 type="datetime-local"
                 value={form.end_time}
-                onChange={(e) => updateField('end_time', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('end_time', e.target.value)}
                 error={errors.end_time}
               />
             </div>
@@ -275,7 +275,7 @@ export default function EventSettingsPage() {
               name="timezone"
               variant="select"
               value={form.timezone}
-              onChange={(e) => updateField('timezone', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('timezone', e.target.value)}
               options={TIMEZONES}
             />
           </CardBody>
@@ -290,13 +290,13 @@ export default function EventSettingsPage() {
               label="Venue Name"
               name="venue_name"
               value={form.venue_name}
-              onChange={(e) => updateField('venue_name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('venue_name', e.target.value)}
             />
             <Input
               label="Venue Address"
               name="venue_address"
               value={form.venue_address}
-              onChange={(e) => updateField('venue_address', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('venue_address', e.target.value)}
             />
           </CardBody>
         </Card>
@@ -311,21 +311,21 @@ export default function EventSettingsPage() {
               name="goal_amount"
               variant="number"
               value={form.goal_amount}
-              onChange={(e) => updateField('goal_amount', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('goal_amount', e.target.value)}
               helperText="Leave blank for no goal"
             />
             <Input
               label="Banner Image URL"
               name="cover_image_url"
               value={form.cover_image_url}
-              onChange={(e) => updateField('cover_image_url', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('cover_image_url', e.target.value)}
               placeholder="https://..."
             />
             <Input
               label="Logo URL"
               name="logo_url"
               value={form.logo_url}
-              onChange={(e) => updateField('logo_url', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('logo_url', e.target.value)}
               placeholder="https://..."
             />
             <div>
@@ -339,7 +339,7 @@ export default function EventSettingsPage() {
                 id="theme_color"
                 type="color"
                 value={form.theme_color}
-                onChange={(e) => updateField('theme_color', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('theme_color', e.target.value)}
                 className="h-10 w-20 cursor-pointer rounded border border-gray-300"
               />
             </div>
@@ -348,7 +348,7 @@ export default function EventSettingsPage() {
               name="custom_css"
               variant="textarea"
               value={form.custom_css}
-              onChange={(e) => updateField('custom_css', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('custom_css', e.target.value)}
               placeholder=".auction-card { border-radius: 16px; }"
               helperText="Advanced: custom CSS for the public event page"
             />
@@ -365,7 +365,7 @@ export default function EventSettingsPage() {
               name="payment_capture_mode"
               variant="select"
               value={form.payment_capture_mode}
-              onChange={(e) => updateField('payment_capture_mode', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('payment_capture_mode', e.target.value)}
               options={PAYMENT_CAPTURE_MODES}
             />
             <p className="text-xs text-gray-500">

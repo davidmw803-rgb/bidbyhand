@@ -130,7 +130,7 @@ export default function CreateEventPage() {
               label="Event Name"
               name="name"
               value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('name', e.target.value)}
               error={errors.name}
               placeholder="Annual Charity Gala 2026"
             />
@@ -139,7 +139,7 @@ export default function CreateEventPage() {
               name="type"
               variant="select"
               value={form.type}
-              onChange={(e) => updateField('type', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('type', e.target.value)}
               options={EVENT_TYPES}
             />
             <Input
@@ -147,7 +147,7 @@ export default function CreateEventPage() {
               name="description"
               variant="textarea"
               value={form.description}
-              onChange={(e) => updateField('description', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('description', e.target.value)}
               placeholder="Tell guests what this event is about..."
             />
           </CardBody>
@@ -164,7 +164,7 @@ export default function CreateEventPage() {
                 name="start_time"
                 type="datetime-local"
                 value={form.start_time}
-                onChange={(e) => updateField('start_time', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('start_time', e.target.value)}
                 error={errors.start_time}
               />
               <Input
@@ -172,7 +172,7 @@ export default function CreateEventPage() {
                 name="end_time"
                 type="datetime-local"
                 value={form.end_time}
-                onChange={(e) => updateField('end_time', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('end_time', e.target.value)}
                 error={errors.end_time}
               />
             </div>
@@ -181,7 +181,7 @@ export default function CreateEventPage() {
               name="timezone"
               variant="select"
               value={form.timezone}
-              onChange={(e) => updateField('timezone', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('timezone', e.target.value)}
               options={TIMEZONES}
             />
           </CardBody>
@@ -196,14 +196,14 @@ export default function CreateEventPage() {
               label="Venue Name"
               name="venue_name"
               value={form.venue_name}
-              onChange={(e) => updateField('venue_name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('venue_name', e.target.value)}
               placeholder="Grand Ballroom"
             />
             <Input
               label="Venue Address"
               name="venue_address"
               value={form.venue_address}
-              onChange={(e) => updateField('venue_address', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('venue_address', e.target.value)}
               placeholder="123 Main St, City, State"
             />
           </CardBody>
@@ -219,7 +219,7 @@ export default function CreateEventPage() {
               name="goal_amount"
               variant="number"
               value={form.goal_amount}
-              onChange={(e) => updateField('goal_amount', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('goal_amount', e.target.value)}
               placeholder="50000"
               helperText="Leave blank for no goal"
             />
@@ -227,7 +227,7 @@ export default function CreateEventPage() {
               label="Banner Image URL"
               name="cover_image_url"
               value={form.cover_image_url}
-              onChange={(e) => updateField('cover_image_url', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('cover_image_url', e.target.value)}
               placeholder="https://..."
               helperText="Direct URL to a banner image"
             />

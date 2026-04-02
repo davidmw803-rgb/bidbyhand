@@ -531,7 +531,7 @@ export default function ItemBiddingPage() {
               <input
                 type="number"
                 value={proxyMax / 100}
-                onChange={(e) => setProxyMax(Math.round(parseFloat(e.target.value || '0') * 100))}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProxyMax(Math.round(parseFloat(e.target.value || '0') * 100))}
                 min={minimumBid / 100}
                 step={increment / 100}
                 className="w-full rounded-lg border border-gray-300 py-3 pl-8 pr-4 text-lg font-bold text-gray-900 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"

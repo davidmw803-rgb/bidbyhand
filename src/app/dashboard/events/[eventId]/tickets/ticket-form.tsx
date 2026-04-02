@@ -120,7 +120,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
               label="Name"
               name="name"
               value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('name', e.target.value)}
               error={errors.name}
               placeholder="General Admission"
             />
@@ -129,7 +129,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
               name="kind"
               variant="select"
               value={form.kind}
-              onChange={(e) => updateField('kind', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('kind', e.target.value)}
               options={TICKET_KINDS}
             />
           </div>
@@ -140,7 +140,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
               name="price"
               variant="number"
               value={form.price}
-              onChange={(e) => updateField('price', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('price', e.target.value)}
               error={errors.price}
               placeholder="100"
             />
@@ -149,7 +149,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
               name="quantity"
               variant="number"
               value={form.quantity}
-              onChange={(e) => updateField('quantity', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('quantity', e.target.value)}
               placeholder="Unlimited"
               helperText="Leave blank for unlimited"
             />
@@ -158,7 +158,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
               name="seats"
               variant="number"
               value={form.seats}
-              onChange={(e) => updateField('seats', e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('seats', e.target.value)}
               placeholder="1"
               helperText="e.g. 10 for a table"
             />
@@ -169,7 +169,7 @@ export function TicketFormSection({ eventId }: { eventId: string }) {
             name="description"
             variant="textarea"
             value={form.description}
-            onChange={(e) => updateField('description', e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('description', e.target.value)}
             placeholder="Includes dinner, open bar, and premium seating..."
           />
 

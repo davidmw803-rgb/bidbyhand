@@ -178,7 +178,7 @@ export function BidForm({
               <input
                 type="number"
                 value={proxyMax ? proxyMax / 100 : ''}
-                onChange={(e) => setProxyMax(Math.round(parseFloat(e.target.value) * 100))}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProxyMax(Math.round(parseFloat(e.target.value) * 100))}
                 placeholder="Enter max amount"
                 className="w-full pl-8 pr-4 py-2 rounded-lg border border-brand-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-200 outline-none text-sm"
                 min={minimumBid / 100}
