@@ -115,9 +115,9 @@ export async function POST(request: NextRequest, { params }: Params) {
       if (invoiceError || !invoice) continue;
 
       // Create line items
-      const lineItems = guestBids.map((bid) => ({
+      const lineItems: Array<{ invoice_id: string; item_type: string; description: string; reference_id: string; amount: number }> = guestBids.map((bid) => ({
         invoice_id: invoice.id,
-        item_type: 'auction_item' as const,
+        item_type: 'auction_item',
         description: (bid as any).item?.title ?? 'Auction Item',
         reference_id: bid.item_id,
         amount: bid.amount,
