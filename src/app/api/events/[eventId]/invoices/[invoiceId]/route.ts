@@ -58,7 +58,7 @@ export async function POST(request: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Invoice is already paid' }, { status: 400 });
     }
 
-    const guest = (invoice as any).guest as { stripe_customer_id?: string; default_payment_method_id?: string } | null;
+    const guest = (invoice as any).guest as { id: string; stripe_customer_id?: string; default_payment_method_id?: string } | null;
     if (!guest?.stripe_customer_id || !guest?.default_payment_method_id) {
       return NextResponse.json(
         { error: 'Guest does not have a card on file' },
