@@ -37,7 +37,7 @@ export default function EventRegisterPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
 
   const [step, setStep] = useState(0);
   const [event, setEvent] = useState<Event | null>(null);

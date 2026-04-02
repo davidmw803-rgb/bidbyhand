@@ -18,7 +18,7 @@ import type { Event, Item } from '@/types';
 
 export default function ItemCatalogPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
 
   const [event, setEvent] = useState<Event | null>(null);
   const [items, setItems] = useState<Item[]>([]);

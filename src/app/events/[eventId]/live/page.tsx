@@ -21,7 +21,7 @@ import type { Event, Item } from '@/types';
 
 export default function LivePage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
   const { toast } = useToast();
 
   const [event, setEvent] = useState<Event | null>(null);

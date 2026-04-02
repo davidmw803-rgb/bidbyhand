@@ -32,7 +32,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     async function fetchInvoice() {
       try {
-        const res = await fetch(`/api/events/${params.slug}/invoices?guest=me`);
+        const res = await fetch(`/api/events/${params.eventId}/invoices?guest=me`);
         if (res.ok) {
           const data = await res.json();
           if (data.data) {
@@ -47,7 +47,7 @@ export default function CheckoutPage() {
       }
     }
     fetchInvoice();
-  }, [params.slug]);
+  }, [params.eventId]);
 
   async function handlePay() {
     if (!invoice) return;
@@ -55,7 +55,7 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
-      const res = await fetch(`/api/events/${params.slug}/invoices/${invoice.id}`, {
+      const res = await fetch(`/api/events/${params.eventId}/invoices/${invoice.id}`, {
         method: 'POST',
       });
 

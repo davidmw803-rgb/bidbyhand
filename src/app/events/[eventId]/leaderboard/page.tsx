@@ -35,7 +35,7 @@ interface TopItem {
 
 export default function LeaderboardPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = params.eventId as string;
 
   const [event, setEvent] = useState<Event | null>(null);
   const [topBidders, setTopBidders] = useState<TopBidder[]>([]);
