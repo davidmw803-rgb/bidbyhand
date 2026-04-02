@@ -326,7 +326,7 @@ export default function OrgSettingsPage() {
                 <div className="flex items-center gap-2">
                   <select
                     value={member.role}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                       handleChangeRole(
                         member.id,
                         e.target.value as OrgMemberRole

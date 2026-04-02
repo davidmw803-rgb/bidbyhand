@@ -22,7 +22,7 @@ export function ItemCard({ item, eventSlug, showBidButton = true, className }: P
   const mainPhoto = photos[0];
 
   const displayBid = item.current_bid || item.starting_bid;
-  const hasBids = item.current_bid > 0;
+  const hasBids = (item.current_bid ?? 0) > 0;
 
   return (
     <div className={cn(

@@ -156,9 +156,14 @@ export type Item = {
   title: string;
   description: string | null;
   type: ItemType;
+  item_type: ItemType;
   status: ItemStatus;
+  /** Category for filtering (Travel, Experiences, Sports, etc.) */
+  category: string | null;
   /** Primary display image */
   photo_url: string | null;
+  /** Multiple photos for the item */
+  photos: string[];
   /** Additional gallery images */
   gallery_urls: string[];
   /** Estimated fair market value in cents */
@@ -178,8 +183,21 @@ export type Item = {
   /** Name of the donor/sponsor who provided the item */
   donor_name: string | null;
   donor_email: string | null;
+  /** When this item's bidding closes */
+  closes_at: string | null;
+  /** Whether item is visible to bidders */
+  is_visible: boolean;
+  /** Reserve price in cents */
+  reserve_price: number | null;
+  /** Available quantity */
+  quantity: number;
   /** Display order within the catalog */
   sort_order: number;
+  /** Consignment/donor info */
+  consignment_donor_name: string | null;
+  consignment_donor_id: string | null;
+  /** Bundled package items */
+  package_items: unknown | null;
   created_at: string;
   updated_at: string;
 };
@@ -195,6 +213,8 @@ export type Bid = {
   status: BidStatus;
   /** Whether this bid was placed by staff on behalf of the guest */
   is_proxy: boolean;
+  /** Whether this is currently the winning bid */
+  is_winning: boolean;
   created_at: string;
 };
 
