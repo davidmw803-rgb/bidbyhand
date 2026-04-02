@@ -71,7 +71,7 @@ export async function POST(request: NextRequest, { params }: Params) {
     }
 
     // Collect all unique guest IDs
-    const allGuestIds = new Set([...bidsByGuest.keys(), ...donationsByGuest.keys()]);
+    const allGuestIds = new Set([...Array.from(bidsByGuest.keys()), ...Array.from(donationsByGuest.keys())]);
 
     // Get guest payment info
     const { data: guests } = await serviceSupabase

@@ -15,6 +15,7 @@ import {
   Gift,
 } from 'lucide-react';
 import type { Event, TicketType, Item } from '@/types';
+export const dynamic = 'force-dynamic';
 
 export default async function EventPage({
   params,

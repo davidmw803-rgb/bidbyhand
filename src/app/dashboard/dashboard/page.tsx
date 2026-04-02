@@ -6,6 +6,7 @@ import type { Event, Organization } from '@/types';
 import { Card, CardBody } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+export const dynamic = 'force-dynamic';
 
 const statusBadgeVariant: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'neutral'> = {
   draft: 'neutral',

@@ -3,6 +3,7 @@ import { createServerSupabase } from '@/lib/supabase/server';
 import type { Organization, OrgMember } from '@/types';
 import { Avatar } from '@/components/ui/avatar';
 import { OrgSidebar } from './sidebar';
+export const dynamic = 'force-dynamic';
 
 export default async function OrganizerLayout({
   children,

@@ -3,6 +3,7 @@ import { createServerSupabase } from '@/lib/supabase/server';
 import type { Event } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { EventSubNav } from './sub-nav';
+export const dynamic = 'force-dynamic';
 
 const statusBadgeVariant: Record<string, 'success' | 'warning' | 'danger' | 'info' | 'neutral'> = {
   draft: 'neutral',

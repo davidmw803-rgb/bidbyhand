@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DataTable, type Column } from '@/components/ui/data-table';
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 
 type DonationRow = Donation & {
   guest?: Pick<Guest, 'id' | 'first_name' | 'last_name'> | null;
