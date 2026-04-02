@@ -118,7 +118,7 @@ export async function POST(request: NextRequest, { params }: Params) {
       const lineItems = guestBids.map((bid) => ({
         invoice_id: invoice.id,
         item_type: 'auction_item' as const,
-        description: (bid.item as Record<string, unknown>)?.title ?? 'Auction Item',
+        description: (bid as any).item?.title ?? 'Auction Item',
         reference_id: bid.item_id,
         amount: bid.amount,
       }));
